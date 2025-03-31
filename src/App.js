@@ -1,18 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import BottomNav from "./components/BottomNav";
 import GameSlider from "./components/GameSlider";
 import GameFilters from "./components/GameFilters";
 import TournamentSlider from "./components/TournamentSlider";
 import Footer from "./components/Footer";
+import RegisterModal from "./components/RegisterModal";
+import LoginModal from "./components/LoginModal";
 
 function App() {
+  const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+
   return (
     <div className="bg-black text-white min-h-screen pb-24">
       <header className="flex justify-between items-center px-4 py-3">
         <div className="text-lg font-bold">OYUUN GAMES</div>
         <div className="space-x-2">
-          <button className="bg-gray-800 text-white px-3 py-1 rounded">Вход</button>
-          <button className="bg-lime-400 text-black px-3 py-1 rounded font-bold">Регистрация</button>
+          <button
+            className="bg-gray-800 text-white px-3 py-1 rounded"
+            onClick={() => setShowLogin(true)}
+          >
+            Вход
+          </button>
+          <button
+            className="bg-lime-400 text-black px-3 py-1 rounded font-bold"
+            onClick={() => setShowRegister(true)}
+          >
+            Регистрация
+          </button>
         </div>
       </header>
 
@@ -43,8 +58,13 @@ function App() {
 
       <Footer />
       <BottomNav />
+
+      {/* модалки */}
+      <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
+      <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
     </div>
   );
 }
 
 export default App;
+
