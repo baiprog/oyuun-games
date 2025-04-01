@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
-const RegisterModal = ({ isOpen, onClose }) => {
+const RegisterModal = ({ isOpen, onClose, onSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [promo, setPromo] = useState("");
@@ -17,9 +18,16 @@ const RegisterModal = ({ isOpen, onClose }) => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      console.log("✅ Успешная регистрация:", user);
-      // TODO: сохранить промокод, выдать бонус, закрыть окно:
-      onClose();
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        balance: 0,
+        promo: promo || null,
+        createdAt: serverTimestamp(),
+      });
+
+      console.log("✅ Регистрация прошла успешно");
+      console.log("✅ onSuccess вызван!");
+      onSuccess();
     } catch (err) {
       console.error("Ошибка регистрации:", err);
       setError(err.message);
@@ -49,7 +57,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
               <button onClick={onClose} className="text-white text-xl">✕</button>
             </div>
 
-            <form className="space-y-4" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="text-sm">Email</label>
                 <input
@@ -104,3 +112,4 @@ const RegisterModal = ({ isOpen, onClose }) => {
 };
 
 export default RegisterModal;
+
