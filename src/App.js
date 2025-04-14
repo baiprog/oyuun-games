@@ -10,7 +10,6 @@ import WalletModal from "./components/WalletModal";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./firebase";
 import { doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from "firebase/firestore";
-import banner from "./assets/banner.png"; // импорт изображения
 import { Home, Wallet, Gamepad2, Menu } from "lucide-react";
 
 function App() {
@@ -110,13 +109,9 @@ function App() {
 
       <section className="px-4">
         <h1 className="text-3xl font-bold mb-2">Игры Дыгына</h1>
-        <div className="rounded-lg overflow-hidden mb-4">
-          <img
-            src={banner}
-            alt="Промо баннер"
-            className="w-full h-auto rounded-lg"
-          />
-        </div>
+        import BannerSlider from "./components/BannerSlider";
+// ...
+<BannerSlider />
       </section>
 
       <GameFilters />
